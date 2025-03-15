@@ -41,6 +41,6 @@ var versionCmd = &cobra.Command{
 			ASCII = true
 		}
 
-		//	printVersionTable()
+		printVersionTable()
 	},
 }
