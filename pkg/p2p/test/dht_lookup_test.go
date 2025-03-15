@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
 	"github.com/johankristianss/etherspace/pkg/p2p/dht"
-	"github.com/johankristianss/etherspace/pkg/p2p/libp2p"
+	p2p "github.com/johankristianss/etherspace/pkg/p2p/network"
+	"github.com/johankristianss/etherspace/pkg/p2p/network/libp2p"
 	"github.com/johankristianss/etherspace/pkg/security/crypto"
 	"github.com/stretchr/testify/assert"
 )

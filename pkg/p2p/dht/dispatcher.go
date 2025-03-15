@@ -4,34 +4,34 @@ import (
 	"context"
 	"sync"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	"github.com/johankristianss/etherspace/pkg/utils"
 	log "github.com/sirupsen/logrus"
 )
 
 type dispatcher struct {
 	k            *Kademlia
-	replyHandler map[string]chan p2p.Message
+	replyHandler map[string]chan net.Message
 	mutex        sync.Mutex
 	ctx          context.Context
 	cancel       context.CancelFunc
-	msgChan      chan p2p.Message
+	msgChan      chan net.Message
 }
 
 func createDispatcher(k *Kademlia) (*dispatcher, error) {
 	ctx, cancel := context.WithCancel(context.Background())
-	msgChan := make(chan p2p.Message, 1000)
+	msgChan := make(chan net.Message, 1000)
 	go k.messenger.ListenForever(msgChan, ctx)
 
 	return &dispatcher{
 		k:            k,
-		replyHandler: make(map[string]chan p2p.Message),
+		replyHandler: make(map[string]chan net.Message),
 		ctx:          ctx,
 		cancel:       cancel,
 		msgChan:      msgChan}, nil
 }
 
-func (dispatcher *dispatcher) handleResponse(msg *p2p.Message) {
+func (dispatcher *dispatcher) handleResponse(msg *net.Message) {
 	dispatcher.mutex.Lock()
 	replyChan, ok := dispatcher.replyHandler[msg.ID]
 	dispatcher.mutex.Unlock()
@@ -91,12 +91,12 @@ func (dispatcher *dispatcher) serveForever() {
 	}
 }
 
-func (dispatcher *dispatcher) send(msg p2p.Message) (chan p2p.Message, error) {
+func (dispatcher *dispatcher) send(msg net.Message) (chan net.Message, error) {
 	msg.ID = utils.GenerateRandomID()
 
 	log.WithFields(log.Fields{"msgID": msg.ID, "From": msg.From.String(), "To": msg.To.String(), "Type": msg.Type}).Info("Sending message")
 
-	replyChan := make(chan p2p.Message)
+	replyChan := make(chan net.Message)
 
 	dispatcher.mutex.Lock()
 	dispatcher.replyHandler[msg.ID] = replyChan
@@ -110,7 +110,7 @@ func (dispatcher *dispatcher) shutdown() {
 	dispatcher.cancel()
 }
 
-func (dispatcher *dispatcher) sendReply(msg p2p.Message, replyMsg p2p.Message) error {
+func (dispatcher *dispatcher) sendReply(msg net.Message, replyMsg net.Message) error {
 	replyMsg.ID = msg.ID
 	err := dispatcher.k.messenger.Send(replyMsg, dispatcher.ctx)
 	return err

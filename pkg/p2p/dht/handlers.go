@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -22,7 +22,7 @@ func (k *Kademlia) addContact(contact *Contact) error {
 	}
 }
 
-func (k *Kademlia) handlePingReq(msg p2p.Message) error {
+func (k *Kademlia) handlePingReq(msg net.Message) error {
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String()}).Info("Handling ping request")
 
 	req, err := ConvertJSONToPingReq(string(msg.Payload))
@@ -48,14 +48,14 @@ func (k *Kademlia) handlePingReq(msg p2p.Message) error {
 		return err
 	}
 
-	return k.dispatcher.sendReply(msg, p2p.Message{
+	return k.dispatcher.sendReply(msg, net.Message{
 		Type:    MSG_PING_RESP,
 		From:    k.Contact.Node,
 		To:      msg.From,
 		Payload: []byte(json)})
 }
 
-func (k *Kademlia) handleFindContactsReq(msg p2p.Message) error {
+func (k *Kademlia) handleFindContactsReq(msg net.Message) error {
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String()}).Info("Handling find contacts request")
 
 	req, err := ConvertJSONToFindContactsReq(string(msg.Payload))
@@ -103,14 +103,14 @@ func (k *Kademlia) handleFindContactsReq(msg p2p.Message) error {
 	}
 
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String(), "ID": k.Contact.ID.String(), "TargetID": kademliaID}).Info("Sending closest contacts")
-	return k.dispatcher.sendReply(msg, p2p.Message{
+	return k.dispatcher.sendReply(msg, net.Message{
 		Type:    MSG_FIND_CONTACTS_RESP,
 		From:    k.Contact.Node,
 		To:      msg.From,
 		Payload: []byte(json)})
 }
 
-func (k *Kademlia) handlePutReq(msg p2p.Message) error {
+func (k *Kademlia) handlePutReq(msg net.Message) error {
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String()}).Info("Handling put request")
 
 	req, err := ConvertJSONToPutReq(string(msg.Payload))
@@ -159,14 +159,14 @@ func (k *Kademlia) handlePutReq(msg p2p.Message) error {
 
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String(), "Key": req.KV.Key, "Value": req.KV.Value}).Info("Sending put response")
 
-	return k.dispatcher.sendReply(msg, p2p.Message{
+	return k.dispatcher.sendReply(msg, net.Message{
 		Type:    MSG_PUT_RESP,
 		From:    k.Contact.Node,
 		To:      msg.From,
 		Payload: []byte(json)})
 }
 
-func (k *Kademlia) handleGetReq(msg p2p.Message) error {
+func (k *Kademlia) handleGetReq(msg net.Message) error {
 	log.WithFields(log.Fields{"Node": k.Contact.Node.String()}).Info("Handling get request")
 
 	req, err := ConvertJSONToGetReq(string(msg.Payload))
@@ -206,7 +206,7 @@ func (k *Kademlia) handleGetReq(msg p2p.Message) error {
 		return err
 	}
 
-	return k.dispatcher.sendReply(msg, p2p.Message{
+	return k.dispatcher.sendReply(msg, net.Message{
 		Type:    MSG_GET_RESP,
 		From:    k.Contact.Node,
 		To:      msg.From,

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
-	"github.com/johankristianss/etherspace/pkg/p2p/mock"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	"github.com/johankristianss/etherspace/pkg/p2p/network/mock"
 	"github.com/johankristianss/etherspace/pkg/security/crypto"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ func createKademliaNode(t *testing.T, n mock.Network, addr string) *Kademlia {
 	prvKey, err := crypto.GeneratePrivateKey()
 	assert.Nil(t, err)
 
-	node := p2p.Node{Addr: addr}
+	node := net.Node{Addr: addr}
 	contact1, err := CreateContact(node, prvKey)
 	assert.Nil(t, err)
 
@@ -235,7 +235,7 @@ func TestKademliaNodeRegAndLookup(t *testing.T) {
 	id, err := crypto.GenerateID(prvKey)
 	assert.Nil(t, err)
 
-	node := p2p.CreateNode("testnodename", "192.168.1.1")
+	node := net.CreateNode("testnodename", "192.168.1.1")
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 	err = nodes[5].RegisterNode(id, prvKey, &node, ctx)
 	cancel()

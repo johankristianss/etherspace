@@ -3,19 +3,19 @@ package mock
 import (
 	"context"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 )
 
 type MockMessenger struct {
 	network Network
-	node    p2p.Node
+	node    net.Node
 }
 
-func CreateMessenger(network Network, node p2p.Node) *MockMessenger {
+func CreateMessenger(network Network, node net.Node) *MockMessenger {
 	return &MockMessenger{network: network, node: node}
 }
 
-func (m *MockMessenger) Send(msg p2p.Message, ctx context.Context) error {
+func (m *MockMessenger) Send(msg net.Message, ctx context.Context) error {
 	socket, err := m.network.Dial(msg.To.String())
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func (m *MockMessenger) Send(msg p2p.Message, ctx context.Context) error {
 	return socket.Send(msg)
 }
 
-func (m *MockMessenger) ListenForever(msgChan chan p2p.Message, ctx context.Context) error {
+func (m *MockMessenger) ListenForever(msgChan chan net.Message, ctx context.Context) error {
 	socket, err := m.network.Listen(m.node.String())
 	if err != nil {
 		return err

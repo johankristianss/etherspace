@@ -6,26 +6,26 @@ import (
 	"time"
 
 	"github.com/go-playground/assert/v2"
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 )
 
 func TestMessenger(t *testing.T) {
 	n := CreateFakeNetwork()
 
-	node1 := p2p.Node{Addr: "10.0.0.1:1111"}
+	node1 := net.Node{Addr: "10.0.0.1:1111"}
 	messenger1 := CreateMessenger(n, node1)
 
-	node2 := p2p.Node{Addr: "10.0.0.2:1111"}
+	node2 := net.Node{Addr: "10.0.0.2:1111"}
 	messenger2 := CreateMessenger(n, node2)
 
-	msgChan := make(chan p2p.Message)
+	msgChan := make(chan net.Message)
 	ctx := context.TODO()
 	go func() {
 		messenger1.ListenForever(msgChan, ctx)
 	}()
 
 	for {
-		err := messenger2.Send(p2p.Message{From: node2, To: node1, Payload: []byte("Hello")}, context.TODO())
+		err := messenger2.Send(net.Message{From: node2, To: node1, Payload: []byte("Hello")}, context.TODO())
 		if err != nil {
 			time.Sleep(10 * time.Millisecond)
 		} else {
@@ -39,7 +39,7 @@ func TestMessenger(t *testing.T) {
 	assert.Equal(t, msg.From.Addr, "10.0.0.2:1111")
 	assert.Equal(t, msg.To.Addr, "10.0.0.1:1111")
 
-	err := messenger2.Send(p2p.Message{From: node2, To: node1, Payload: []byte("Hello 2")}, context.TODO())
+	err := messenger2.Send(net.Message{From: node2, To: node1, Payload: []byte("Hello 2")}, context.TODO())
 	assert.Equal(t, err, nil)
 
 	msg = <-msgChan

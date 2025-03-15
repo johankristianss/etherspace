@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	"github.com/libp2p/go-libp2p"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"
@@ -19,7 +19,7 @@ import (
 )
 
 type Messenger struct {
-	Node p2p.Node
+	Node net.Node
 	host host.Host
 }
 
@@ -53,10 +53,10 @@ func CreateMessengerWithBindAddr(bindAddr string, port int, name string) (*Messe
 		log.Info("Listening on ", addr)
 	}
 
-	return &Messenger{host: host, Node: p2p.Node{Name: name, Addr: addrs[0]}}, nil
+	return &Messenger{host: host, Node: net.Node{Name: name, Addr: addrs[0]}}, nil
 }
 
-func (m *Messenger) Send(msg p2p.Message, ctx context.Context) error {
+func (m *Messenger) Send(msg net.Message, ctx context.Context) error {
 	host, err := libp2p.New(
 		libp2p.NATPortMap(),
 		libp2p.EnableRelay())
@@ -105,10 +105,10 @@ func (m *Messenger) Send(msg p2p.Message, ctx context.Context) error {
 	return err
 }
 
-func (m *Messenger) ListenForever(msgChan chan p2p.Message, ctx context.Context) error {
+func (m *Messenger) ListenForever(msgChan chan net.Message, ctx context.Context) error {
 	for {
 		m.host.SetStreamHandler("/colonies/1.0.0", func(stream network.Stream) {
-			var msg p2p.Message
+			var msg net.Message
 			r := bufio.NewReader(stream)
 
 			select {

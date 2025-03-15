@@ -1,18 +1,18 @@
 package dht
 
 import (
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	log "github.com/sirupsen/logrus"
 )
 
 type Kademlia struct {
-	messenger  p2p.Messenger
+	messenger  net.Messenger
 	Contact    Contact
 	states     *states
 	dispatcher *dispatcher
 }
 
-func CreateKademlia(messenger p2p.Messenger, contact Contact) (*Kademlia, error) {
+func CreateKademlia(messenger net.Messenger, contact Contact) (*Kademlia, error) {
 	states := createStates(contact)
 	k := &Kademlia{messenger: messenger, Contact: contact, states: states}
 	dispatcher, err := createDispatcher(k)

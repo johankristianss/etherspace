@@ -3,7 +3,7 @@ package libp2p
 import (
 	"context"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -12,11 +12,11 @@ type Server struct {
 	messenger *Messenger
 	ctx       context.Context
 	cancel    context.CancelFunc
-	msgChan   chan p2p.Message
-	handler   func(msg p2p.Message)
+	msgChan   chan net.Message
+	handler   func(msg net.Message)
 }
 
-func CreateServer(port int, handler func(msg p2p.Message)) (*Server, error) {
+func CreateServer(port int, handler func(msg net.Message)) (*Server, error) {
 	messenger, err := CreateMessenger(port, "")
 	if err != nil {
 		return nil, err
@@ -24,7 +24,7 @@ func CreateServer(port int, handler func(msg p2p.Message)) (*Server, error) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	msgChan := make(chan p2p.Message, 1000)
+	msgChan := make(chan net.Message, 1000)
 
 	s := &Server{}
 	s.port = port

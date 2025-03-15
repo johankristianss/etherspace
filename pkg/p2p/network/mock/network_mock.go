@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 )
 
 type FakeNetwork struct {
@@ -19,7 +19,7 @@ func CreateFakeNetwork() *FakeNetwork {
 func (n *FakeNetwork) Listen(addr string) (Socket, error) {
 	n.mutex.Lock()
 	defer n.mutex.Unlock()
-	socket := &FakeSocket{conn: make(chan p2p.Message, 1000)}
+	socket := &FakeSocket{conn: make(chan net.Message, 1000)}
 	n.Hosts[addr] = socket
 	return socket, nil
 }

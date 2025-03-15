@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	"github.com/johankristianss/etherspace/pkg/security/crypto"
 	log "github.com/sirupsen/logrus"
 )
@@ -12,7 +12,7 @@ import (
 const MaxPendingRequests = 10000
 const RegistrationReplicationFactor = 10
 
-func (k *Kademlia) ping(node p2p.Node, ctx context.Context) error {
+func (k *Kademlia) ping(node net.Node, ctx context.Context) error {
 	log.WithFields(log.Fields{"To": node.String(), "From": k.Contact.Node.String()}).Info("Sending ping request")
 	payload := PingReq{Header: RPCHeader{Sender: k.Contact}}
 	json, err := payload.ToJSON()
@@ -21,7 +21,7 @@ func (k *Kademlia) ping(node p2p.Node, ctx context.Context) error {
 		return err
 	}
 
-	reply, err := k.dispatcher.send(p2p.Message{
+	reply, err := k.dispatcher.send(net.Message{
 		Type:    MSG_PING_REQ,
 		From:    k.Contact.Node,
 		To:      node,
@@ -50,7 +50,7 @@ func (k *Kademlia) ping(node p2p.Node, ctx context.Context) error {
 	return nil
 }
 
-func (k *Kademlia) findRemoteContacts(node p2p.Node, kademliaID string, count int, ctx context.Context) ([]Contact, error) {
+func (k *Kademlia) findRemoteContacts(node net.Node, kademliaID string, count int, ctx context.Context) ([]Contact, error) {
 	log.WithFields(log.Fields{"To": node, "From": k.Contact.Node.String()}).Info("Sending find contacts request")
 	payload := FindContactsReq{Header: RPCHeader{Sender: k.Contact}, KademliaID: kademliaID, Count: count}
 	json, err := payload.ToJSON()
@@ -59,7 +59,7 @@ func (k *Kademlia) findRemoteContacts(node p2p.Node, kademliaID string, count in
 		return nil, err
 	}
 
-	reply, err := k.dispatcher.send(p2p.Message{
+	reply, err := k.dispatcher.send(net.Message{
 		Type:    MSG_FIND_CONTACTS_REQ,
 		From:    k.Contact.Node,
 		To:      node,
@@ -125,7 +125,7 @@ func (k *Kademlia) FindContact(kademliaID string, ctx context.Context) (Contact,
 	return Contact{}, errors.New("No contacts found")
 }
 
-func (k *Kademlia) RegisterNetwork(bootstrapNode p2p.Node, kademliaID string, ctx context.Context) error {
+func (k *Kademlia) RegisterNetwork(bootstrapNode net.Node, kademliaID string, ctx context.Context) error {
 	err := k.ping(bootstrapNode, ctx)
 	if err != nil {
 		return err
@@ -139,7 +139,7 @@ func (k *Kademlia) RegisterNetwork(bootstrapNode p2p.Node, kademliaID string, ct
 }
 
 func (k *Kademlia) RegisterNetworkWithAddr(bootstrapNodeAddr string, kademliaID string, ctx context.Context) error {
-	bootstrapNode := p2p.CreateNode("boostrapnode", bootstrapNodeAddr)
+	bootstrapNode := net.CreateNode("boostrapnode", bootstrapNodeAddr)
 	err := k.ping(bootstrapNode, ctx)
 	if err != nil {
 		return err
@@ -213,7 +213,7 @@ func (k *Kademlia) FindContacts(kademliaID string, count int, ctx context.Contex
 	}
 }
 
-func (k *Kademlia) putRemote(node p2p.Node, id string, prvKey string, key string, value string, ctx context.Context) error {
+func (k *Kademlia) putRemote(node net.Node, id string, prvKey string, key string, value string, ctx context.Context) error {
 	log.WithFields(log.Fields{"To": node, "From": k.Contact.Node.String()}).Info("Sending put request")
 
 	crypto := crypto.CreateCrypto()
@@ -231,7 +231,7 @@ func (k *Kademlia) putRemote(node p2p.Node, id string, prvKey string, key string
 		return err
 	}
 
-	reply, err := k.dispatcher.send(p2p.Message{
+	reply, err := k.dispatcher.send(net.Message{
 		Type:    MSG_PUT_REQ,
 		From:    k.Contact.Node,
 		To:      node,
@@ -262,7 +262,7 @@ func (k *Kademlia) putRemote(node p2p.Node, id string, prvKey string, key string
 	}
 }
 
-func (k *Kademlia) getRemote(node p2p.Node, id string, key string, ctx context.Context) ([]KV, error) {
+func (k *Kademlia) getRemote(node net.Node, id string, key string, ctx context.Context) ([]KV, error) {
 	log.WithFields(log.Fields{"To": node, "From": k.Contact.Node.String()}).Info("Sending get request")
 	payload := GetReq{Header: RPCHeader{Sender: k.Contact}, Key: "/" + id + key}
 	json, err := payload.ToJSON()
@@ -271,7 +271,7 @@ func (k *Kademlia) getRemote(node p2p.Node, id string, key string, ctx context.C
 		return nil, err
 	}
 
-	reply, err := k.dispatcher.send(p2p.Message{
+	reply, err := k.dispatcher.send(net.Message{
 		Type:    MSG_GET_REQ,
 		From:    k.Contact.Node,
 		To:      node,
@@ -370,7 +370,7 @@ func (k *Kademlia) Get(id string, key string, replicationFactor int, ctx context
 	return result, nil
 }
 
-func (k *Kademlia) RegisterNode(id string, prvKey string, node *p2p.Node, ctx context.Context) error {
+func (k *Kademlia) RegisterNode(id string, prvKey string, node *net.Node, ctx context.Context) error {
 	nodeJSON, err := node.ToJSON()
 	if err != nil {
 		log.WithFields(log.Fields{"Error": err}).Error("Failed to convert node to JSON")
@@ -385,7 +385,7 @@ func (k *Kademlia) RegisterNode(id string, prvKey string, node *p2p.Node, ctx co
 	return nil
 }
 
-func (k *Kademlia) LookupNode(id string, name string, ctx context.Context) (*p2p.Node, error) {
+func (k *Kademlia) LookupNode(id string, name string, ctx context.Context) (*net.Node, error) {
 	kvs, err := k.Get(id, "/nodes/"+name, RegistrationReplicationFactor, ctx)
 	if err != nil {
 		log.WithFields(log.Fields{"Error": err}).Error("Failed to put node")
@@ -400,7 +400,7 @@ func (k *Kademlia) LookupNode(id string, name string, ctx context.Context) (*p2p
 		return nil, errors.New("Multiple nodes found")
 	}
 
-	node, err := p2p.ConvertJSONToNode(kvs[0].Value)
+	node, err := net.ConvertJSONToNode(kvs[0].Value)
 	if err != nil {
 		log.WithFields(log.Fields{"Error": err}).Error("Failed to convert to node")
 		return nil, err

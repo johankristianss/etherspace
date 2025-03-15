@@ -5,21 +5,21 @@ import (
 	"sort"
 
 	"github.com/johankristianss/etherspace/internal/crypto"
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 )
 
 type Contact struct {
 	ID       KademliaID `json:"kademliaid"`
-	Node     p2p.Node   `json:"node"`
+	Node     net.Node   `json:"node"`
 	prvKey   string
 	distance KademliaID
 }
 
 func createContactWithKademliaID(id KademliaID, addr string) Contact { // Just for testing
-	return Contact{ID: id, Node: p2p.Node{Addr: addr}}
+	return Contact{ID: id, Node: net.Node{Addr: addr}}
 }
 
-func CreateContact(node p2p.Node, prvKey string) (Contact, error) {
+func CreateContact(node net.Node, prvKey string) (Contact, error) {
 	id, err := crypto.CreateIdendityFromString(prvKey)
 	if err != nil {
 		return Contact{}, err

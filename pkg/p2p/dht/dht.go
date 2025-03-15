@@ -3,7 +3,7 @@ package dht
 import (
 	"context"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 )
 
 // DHT defines the operations supported by a Distributed Hash Table in a Kademlia network.
@@ -11,7 +11,7 @@ type DHT interface {
 
 	// Register adds a new node to the DHT network using a bootstrap node's address and a unique KademliaID.
 	// The context allows for request cancellation and timeout control.
-	RegisterNetwork(bootstrapNode p2p.Node, kademliaID string, ctx context.Context) error
+	RegisterNetwork(bootstrapNode net.Node, kademliaID string, ctx context.Context) error
 
 	// RegisterNetworkWithAddr adds a new node to the DHT network using a bootstrap node's address and a unique KademliaID.
 	RegisterNetworkWithAddr(bootstrapNodeAddr string, kademliaID string, ctx context.Context) error
@@ -40,9 +40,9 @@ type DHT interface {
 	// GetContact returns the contact information of the local DHT node.
 	GetContact() Contact
 
-	RegisterNode(id string, prvKey string, node *p2p.Node, ctx context.Context) error
+	RegisterNode(id string, prvKey string, node *net.Node, ctx context.Context) error
 
-	LookupNode(id string, name string, ctx context.Context) (*p2p.Node, error)
+	LookupNode(id string, name string, ctx context.Context) (*net.Node, error)
 
 	// Shutdown gracefully stops the DHT node and releases all resources.
 	Shutdown()

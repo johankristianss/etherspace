@@ -5,14 +5,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/johankristianss/etherspace/pkg/p2p"
+	net "github.com/johankristianss/etherspace/pkg/p2p/network"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNetworkMock(t *testing.T) {
 	n := CreateFakeNetwork()
 
-	resultChan := make(chan p2p.Message)
+	resultChan := make(chan net.Message)
 
 	socket, err := n.Listen("10.0.0.1:8080")
 	assert.NotNil(t, socket)
@@ -27,9 +27,9 @@ func TestNetworkMock(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, socket2)
 	go func() {
-		socket.Send(p2p.Message{
-			To:      p2p.Node{Addr: "10.0.0.1:8080"},
-			From:    p2p.Node{Addr: "10.0.0.2:8080"},
+		socket.Send(net.Message{
+			To:      net.Node{Addr: "10.0.0.1:8080"},
+			From:    net.Node{Addr: "10.0.0.2:8080"},
 			Payload: []byte("test_payload")})
 	}()
 
