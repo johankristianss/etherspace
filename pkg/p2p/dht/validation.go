@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/johankristianss/etherspace/pkg/security/crypto"
+	"github.com/johankristianss/evrium/pkg/security/crypto"
 )
 
 func ValidateKV(kv *KV) (bool, error) {

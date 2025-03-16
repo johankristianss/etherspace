@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 	"github.com/libp2p/go-libp2p"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"

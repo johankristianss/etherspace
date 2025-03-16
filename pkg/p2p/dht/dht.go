@@ -3,7 +3,7 @@ package dht
 import (
 	"context"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 )
 
 // DHT defines the operations supported by a Distributed Hash Table in a Kademlia network.

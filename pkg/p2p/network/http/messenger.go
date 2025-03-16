@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	p2pnet "github.com/johankristianss/etherspace/pkg/p2p/network"
+	p2pnet "github.com/johankristianss/evrium/pkg/p2p/network"
 	log "github.com/sirupsen/logrus"
 )
 

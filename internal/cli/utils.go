@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/johankristianss/etherspace/pkg/build"
+	"github.com/johankristianss/evrium/pkg/build"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-playground/assert/v2"
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 )
 
 func TestMessenger(t *testing.T) {

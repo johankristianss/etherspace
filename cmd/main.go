@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/johankristianss/etherspace/internal/cli"
-	"github.com/johankristianss/etherspace/pkg/build"
+	"github.com/johankristianss/evrium/internal/cli"
+	"github.com/johankristianss/evrium/pkg/build"
 )
 
 var (

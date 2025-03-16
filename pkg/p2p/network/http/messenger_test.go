@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	p2pnet "github.com/johankristianss/etherspace/pkg/p2p/network"
+	p2pnet "github.com/johankristianss/evrium/pkg/p2p/network"
 )
 
 // TestSend checks if the HTTPMessenger's Send method correctly sends messages

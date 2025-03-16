@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 	log "github.com/sirupsen/logrus"
 )
 

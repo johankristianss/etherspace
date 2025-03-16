@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
-	"github.com/johankristianss/etherspace/pkg/p2p/network/mock"
-	"github.com/johankristianss/etherspace/pkg/security/crypto"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
+	"github.com/johankristianss/evrium/pkg/p2p/network/mock"
+	"github.com/johankristianss/evrium/pkg/security/crypto"
 	"github.com/stretchr/testify/assert"
 )
 

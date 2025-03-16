@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
-	"github.com/johankristianss/etherspace/pkg/utils"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
+	"github.com/johankristianss/evrium/pkg/utils"
 	log "github.com/sirupsen/logrus"
 )
 

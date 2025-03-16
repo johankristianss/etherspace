@@ -3,7 +3,7 @@ package crypto
 import (
 	"encoding/hex"
 
-	"github.com/johankristianss/etherspace/internal/crypto"
+	"github.com/johankristianss/evrium/internal/crypto"
 )
 
 type StandaloneCrypto struct {

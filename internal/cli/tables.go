@@ -2,7 +2,7 @@ package cli
 
 import (
 	goprettytable "github.com/jedib0t/go-pretty/v6/table"
-	"github.com/johankristianss/etherspace/internal/table"
+	"github.com/johankristianss/evrium/internal/table"
 )
 
 func createTable(sortCol int) (*table.Table, table.Theme) {

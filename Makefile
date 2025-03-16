@@ -8,10 +8,10 @@ GOLDFLAGS += -X 'main.BuildVersion=$(VERSION)'
 GOLDFLAGS += -X 'main.BuildTime=$(BUILDTIME)'
 
 build:
-	@CGO_ENABLED=0 go build -ldflags="-s -w $(GOLDFLAGS)" -o ./bin/etherspace ./cmd/main.go
+	@CGO_ENABLED=0 go build -ldflags="-s -w $(GOLDFLAGS)" -o ./bin/evrium ./cmd/main.go
 
 install:
-	cp ./bin/etherspace /usr/local/bin
+	cp ./bin/evrium /usr/local/bin
 
 test:
 	@cd pkg/p2p/network; grc go test -v --race

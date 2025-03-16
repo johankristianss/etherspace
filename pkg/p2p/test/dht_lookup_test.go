@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/johankristianss/etherspace/pkg/p2p/dht"
-	p2p "github.com/johankristianss/etherspace/pkg/p2p/network"
-	"github.com/johankristianss/etherspace/pkg/p2p/network/libp2p"
-	"github.com/johankristianss/etherspace/pkg/security/crypto"
+	"github.com/johankristianss/evrium/pkg/p2p/dht"
+	p2p "github.com/johankristianss/evrium/pkg/p2p/network"
+	"github.com/johankristianss/evrium/pkg/p2p/network/libp2p"
+	"github.com/johankristianss/evrium/pkg/security/crypto"
 	"github.com/stretchr/testify/assert"
 )
 

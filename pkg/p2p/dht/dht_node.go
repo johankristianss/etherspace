@@ -1,8 +1,8 @@
 package dht
 
 import (
-	"github.com/johankristianss/etherspace/internal/crypto"
-	"github.com/johankristianss/etherspace/pkg/p2p/network/libp2p"
+	"github.com/johankristianss/evrium/internal/crypto"
+	"github.com/johankristianss/evrium/pkg/p2p/network/libp2p"
 )
 
 func CreateDHT(port int, name string) (DHT, error) {

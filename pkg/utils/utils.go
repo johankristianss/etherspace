@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/johankristianss/etherspace/pkg/security/crypto"
+	"github.com/johankristianss/evrium/pkg/security/crypto"
 
 	"github.com/google/uuid"
 )

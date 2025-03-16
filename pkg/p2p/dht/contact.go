@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/johankristianss/etherspace/internal/crypto"
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	"github.com/johankristianss/evrium/internal/crypto"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 )
 
 type Contact struct {

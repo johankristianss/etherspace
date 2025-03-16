@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/johankristianss/etherspace/pkg/utils"
+	"github.com/johankristianss/evrium/pkg/utils"
 	"github.com/stretchr/testify/assert"
 )
 

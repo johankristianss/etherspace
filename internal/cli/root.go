@@ -18,8 +18,8 @@ func init() {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "etherspace",
-	Short: "etherspace",
+	Use:   "evrium",
+	Short: "evrium",
 	Long:  "CLI to interact with Etherspace DHT",
 }
 

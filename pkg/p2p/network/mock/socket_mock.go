@@ -3,7 +3,7 @@ package mock
 import (
 	"context"
 
-	net "github.com/johankristianss/etherspace/pkg/p2p/network"
+	net "github.com/johankristianss/evrium/pkg/p2p/network"
 )
 
 type FakeSocket struct {

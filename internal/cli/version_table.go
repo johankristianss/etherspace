@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/johankristianss/etherspace/pkg/build"
+	"github.com/johankristianss/evrium/pkg/build"
 	"github.com/muesli/termenv"
 )
 

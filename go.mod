@@ -1,4 +1,4 @@
-module github.com/johankristianss/etherspace
+module github.com/johankristianss/evrium
 
 go 1.23.0
 
